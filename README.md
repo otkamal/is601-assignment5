@@ -13,7 +13,7 @@ A simple command-line calculator REPL built in Python.
 ```
 mod2_assignment/
 ├── .github/
-│   ├── workflows/
+│   └── workflows
 │       └── tests.yml
 ├── app/
 │   ├── __init__.py
