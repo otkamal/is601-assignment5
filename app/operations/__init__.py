@@ -1,0 +1,57 @@
+
+def addition(a: float, b: float) -> float:
+    """
+    Adds two numbers together.
+
+    Args:
+        a: The first number.
+        b: The second number.
+
+    Returns:
+        The sum of a and b.
+    """
+    return a + b
+
+def subtraction(a: float, b: float) -> float:
+    """
+    Subtracts b from a.
+
+    Args:
+        a: The number to subtract from.
+        b: The number to subtract.
+
+    Returns:
+        The difference of a and b.
+    """
+    return a - b
+
+def multiplication(a: float, b: float) -> float:
+    """
+    Multiplies two numbers together.
+
+    Args:
+        a: The first number.
+        b: The second number.
+
+    Returns:
+        The product of a and b.
+    """
+    return a * b
+
+def division(a: float, b: float) -> float:
+    """
+    Divides a by b.
+
+    Args:
+        a: The dividend.
+        b: The divisor.
+
+    Returns:
+        The quotient of a and b.
+
+    Raises:
+        ZeroDivisionError: If b is zero.
+    """
+    if b == 0:
+        raise ZeroDivisionError("Error: b cannot be 0.")
+    return a / b
