@@ -7,6 +7,7 @@ A command-line calculator REPL built in Python, refactored to use an `Operations
 - Arithmetic logic moved into an `Operations` class (`app/operations/`)
 - Calculator REPL updated to call `Operations` static methods
 - Tests refactored to use `pytest.mark.parametrize`
+- Added basic linting in Github Action workflow
 
 ## Project Structure
 
