@@ -1,6 +1,5 @@
-
 class Operations():
-    
+
     """
     A collection of basic arithmetic operations.
 

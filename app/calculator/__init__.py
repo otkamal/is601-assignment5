@@ -1,5 +1,6 @@
 from app.operations import Operations
 
+
 def calculator() -> None:
     """
     Runs an interactive calculator REPL (Read-Eval-Print Loop).
@@ -34,7 +35,7 @@ def calculator() -> None:
         try:
             operation, a, b = user_input.split()
             a, b = float(a), float(b)
-        except ValueError as e:
+        except ValueError:
             print("Invalid input. Please follow <operation> <a> <b> syntax.")
             continue
 
@@ -55,3 +56,4 @@ def calculator() -> None:
             continue
 
         print(f"Result: {result}")
+        
