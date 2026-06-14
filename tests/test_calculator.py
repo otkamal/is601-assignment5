@@ -55,7 +55,7 @@ def test_invalid_operation(monkeypatch, capsys):
     """Tests supported operations check in REPL."""
     input = ["modulo 5 2", "exit"]
     output = run_calculator_with_input(monkeypatch, capsys, input)
-    assert "Unknown operation modulo. Supported operations: add, subtract, multiply, divide." in output
+    assert "\"modulo\" is not a supported operation." in output
 
 def test_invalid_values(monkeypatch, capsys):
     """Tests valid input values in REPL."""
