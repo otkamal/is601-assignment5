@@ -34,7 +34,24 @@ class Calculation(ABC):
             The result of the calculation as a float.
         """
 
+    def __str__(self) -> str:
+        """
+        Returns a human-readable string representation of the calculation.
 
+        Returns:
+            A string in the format ClassName(operand_a, operand_b).
+        """
+        return f"{self.__class__.__name__}(a = {self.operand_a}, b = {self.operand_b})"
+
+    def __repr__(self) -> str:
+        """
+        Returns a detailed string representation of the calculation for debugging.
+
+        Returns:
+            A string in the format ClassName: operand_a = a, operand_b = b.
+        """
+        return f"{self.__class__.__name__}: operand_a = {self.operand_a}, operand_b = {self.operand_b}"
+    
 class CalculationFactory:
 
     """
