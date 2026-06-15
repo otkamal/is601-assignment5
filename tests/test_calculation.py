@@ -82,3 +82,8 @@ def test_unsupported_operation() -> None:
 def test_faactory_division_by_zero() -> None:
     with pytest.raises(ZeroDivisionError, match="Error: b cannot be 0."):
         CalculationFactory.build_calculation("divide", 10, 0).execute()
+
+def test_supported_operations_list() -> None:
+    factory = CalculationFactory()
+    for op in ('add', 'subtract', 'multiply', 'divide', 'power'):
+        assert op in factory.get_supported_operations(), f"{op} does not seem to be supported"

@@ -111,6 +111,9 @@ class CalculationFactory:
         new_calculation = cls._calculations.get(calc_sanitized)
         return new_calculation(a, b)
 
+    @classmethod
+    def get_supported_operations(cls):
+        return cls._calculations.keys()
 
 @CalculationFactory.register_calculation('add')
 class Addition(Calculation):
