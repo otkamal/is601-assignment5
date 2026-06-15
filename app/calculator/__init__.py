@@ -1,5 +1,5 @@
 from pyfiglet import Figlet
-from app.calculation import CalculationFactory
+from app.calculation import Calculation, CalculationFactory
 
 def calculator() -> None:
     """
@@ -31,6 +31,7 @@ def calculator() -> None:
     print("Enter an operation and two numbers, or 'exit' to quit.")
     print("Enter 'help' to see available operations or 'history' to see previously ran operations.")
     
+    history: list[tuple[Calculation, float]] = []
     while True:
         user_input = input(">>> ")
         user_input = user_input.lower()
@@ -40,7 +41,11 @@ def calculator() -> None:
         elif user_input == "help":
             dummy_factory = CalculationFactory()
             operations = ", ".join(dummy_factory.get_supported_operations())
-            print(f"Supported operations: {operations}, history, help, and exit.\n")
+            print(f"Supported operations: {operations}, history, help, and exit.")
+            continue
+        elif user_input == "history":
+            for calc, result in history:
+                print(f"- {str(calc)} = {result}")
             continue
 
         try:
@@ -52,7 +57,9 @@ def calculator() -> None:
 
         try:
             calculation = CalculationFactory.build_calculation(operation, a, b)
-            print(f"Result: {calculation.execute()}\n")
+            result = calculation.execute()
+            history.append((calculation, result))
+            print(f"Result: {result}")
         except ValueError as err:
             print(err)
             continue

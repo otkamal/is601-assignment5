@@ -74,3 +74,13 @@ def test_help(monkeypatch, capsys):
     input = ["help", "exit"]
     output = run_calculator_with_input(monkeypatch, capsys, input)
     assert "Supported operations: " in output
+
+def test_history_single_event(monkeypatch,capsys):
+    input = ["add 1 2", "history", "exit"]
+    output = run_calculator_with_input(monkeypatch, capsys, input)
+    assert "Addition(a = 1.0, b = 2.0) = 3.0" in output
+
+def test_history_empty(monkeypatch,capsys):
+    input = ["history", "exit"]
+    output = run_calculator_with_input(monkeypatch, capsys, input)
+    assert "Exiting calculator... Goodbye ~" in output
