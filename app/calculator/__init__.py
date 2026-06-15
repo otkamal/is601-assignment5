@@ -28,7 +28,7 @@ def calculator() -> None:
     startscreen = Figlet(font="slant")
     print(startscreen.renderText("Calculator REPL"))
     print("Type 'exit' to quit.")
-    print("Enter an operation (add, subtract, multiply, divide) and two numbers, or 'exit' to quit.")
+    print("Enter an operation and two numbers, or 'exit' to quit.")
     print("Enter 'help' to see available operations or 'history' to see previously ran operations.")
     
     while True:
@@ -37,6 +37,11 @@ def calculator() -> None:
         if user_input == "exit":
             print("Exiting calculator... Goodbye ~")
             break
+        elif user_input == "help":
+            dummy_factory = CalculationFactory()
+            operations = ", ".join(dummy_factory.get_supported_operations())
+            print(f"Supported operations: {operations}, history, help, and exit.\n")
+            continue
 
         try:
             operation, a, b = user_input.split()

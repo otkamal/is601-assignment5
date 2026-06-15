@@ -64,7 +64,13 @@ def test_invalid_values(monkeypatch, capsys):
     assert "Invalid input. Please follow <operation> <a> <b> syntax." in output
 
 def test_exit(monkeypatch, capsys):
-    """Tests quits on 'exit' in REPL."""
+    """ Tests quits on 'exit' in REPL. """
     input = ["exit"]
     output = run_calculator_with_input(monkeypatch, capsys, input)
     assert "Exiting calculator... Goodbye ~" in output
+
+def test_help(monkeypatch, capsys):
+    """ Tests operation list on 'help' in REPL. """
+    input = ["help", "exit"]
+    output = run_calculator_with_input(monkeypatch, capsys, input)
+    assert "Supported operations: " in output
