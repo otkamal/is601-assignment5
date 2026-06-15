@@ -1,6 +1,7 @@
 from pyfiglet import Figlet
 from app.calculation import Calculation, CalculationFactory
 
+
 def calculator() -> None:
     """
     Runs an interactive calculator REPL (Read-Eval-Print Loop).
@@ -30,7 +31,7 @@ def calculator() -> None:
     print("Type 'exit' to quit.")
     print("Enter an operation and two numbers, or 'exit' to quit.")
     print("Enter 'help' to see available operations or 'history' to see previously ran operations.")
-    
+
     history: list[tuple[Calculation, float]] = []
     while True:
         user_input = input(">>> ")
