@@ -11,6 +11,8 @@ class Operations():
         subtraction(a, b): Returns the difference of a and b.
         multiplication(a, b): Returns the product of a and b.
         division(a, b): Returns the quotient of a and b.
+        power(a, b): Returns a raised to the power of b.
+        modulus(a, b): Returns the remainder of a divided by b.
     """
 
     @staticmethod
@@ -76,10 +78,33 @@ class Operations():
 
     @staticmethod
     def power(a: float, b: float) -> float:
+        """
+        Raises a to the power of b.
+
+        Args:
+            a: The base number.
+            b: The exponent.
+
+        Returns:
+            The result of a raised to the power of b.
+        """
         return a ** b
-    
+
     @staticmethod
     def modulus(a: float, b: float) -> float:
+        """
+        Returns the remainder of dividing a by b.
+
+        Args:
+            a: The dividend.
+            b: The divisor.
+
+        Returns:
+            The remainder of a divided by b.
+
+        Raises:
+            ZeroDivisionError: If b is zero.
+        """
         if b == 0:
             raise ZeroDivisionError("Error: b cannot be 0.")
         return a % b

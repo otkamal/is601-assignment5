@@ -113,6 +113,12 @@ class CalculationFactory:
 
     @classmethod
     def get_supported_operations(cls):
+        """
+        Returns the names of all registered operations.
+
+        Returns:
+            A view of the registered operation name strings.
+        """
         return cls._calculations.keys()
 
 @CalculationFactory.register_calculation('add')
@@ -199,11 +205,43 @@ class Division(Calculation):
 
 @CalculationFactory.register_calculation('power')
 class Power(Calculation):
+
+    """
+    Calculation that raises the first operand to the power of the second.
+
+    Methods:
+        execute(): Returns operand_a raised to the power of operand_b.
+    """
+
     def execute(self) -> float:
+        """
+        Raises operand_a to the power of operand_b.
+
+        Returns:
+            The result of operand_a raised to the power of operand_b.
+        """
         return Operations.power(self.operand_a, self.operand_b)
-    
+
+
 @CalculationFactory.register_calculation('modulus')
 class Modulus(Calculation):
+
+    """
+    Calculation that returns the remainder of dividing the first operand by the second.
+
+    Methods:
+        execute(): Returns the remainder of operand_a divided by operand_b.
+    """
+
     def execute(self) -> float:
+        """
+        Returns the remainder of dividing operand_a by operand_b.
+
+        Returns:
+            The remainder of operand_a divided by operand_b.
+
+        Raises:
+            ZeroDivisionError: If operand_b is zero.
+        """
         return Operations.modulus(self.operand_a, self.operand_b)
     
