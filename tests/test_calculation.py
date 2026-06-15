@@ -8,6 +8,7 @@ from app.calculation import Calculation, CalculationFactory
         ("subtract", 17, 7, 10),
         ("divide", 10, 2, 5),
         ("multiply", 3, 3, 9),
+        ("power", 5, 2, 25),
         ("ADD", 4, 2, 6),
     ],
     ids=[
@@ -15,6 +16,7 @@ from app.calculation import Calculation, CalculationFactory
         "factory_subtract",
         "factory_divide",
         "factory_multiply",
+        "factory_power",
         "factory_add_case_insensitive",
     ]
 )
@@ -30,6 +32,15 @@ def test_factory_build_and_execute(op: str, a: float, b: float, expected: float)
         ("subtract", 5, 10, "Subtraction(a = 5, b = 10)"),
         ("multiply", 5, 10, "Multiplication(a = 5, b = 10)"),
         ("divide", 5, 10, "Division(a = 5, b = 10)"),
+        ("power", 5, 2, "Power(a = 5, b = 2)")
+    ],
+    ids=
+    [
+        "string_add",
+        "string_subtract",
+        "string_multiply",
+        "string_divide",
+        "string_power"
     ]
 )
 def test_calculation_string(op: str, a: float, b: float, expected: str) -> None:
@@ -43,6 +54,14 @@ def test_calculation_string(op: str, a: float, b: float, expected: str) -> None:
         ("subtract", 5, 10, "Subtraction: operand_a = 5, operand_b = 10"),
         ("multiply", 5, 10, "Multiplication: operand_a = 5, operand_b = 10"),
         ("divide", 5, 10, "Division: operand_a = 5, operand_b = 10"),
+        ("power", 5, 10, "Power: operand_a = 5, operand_b = 10"),
+    ],
+    ids=[
+        "repr_add",
+        "repr_subtract",
+        "repr_multiply",
+        "repr_divide",
+        "repr_power"
     ]
 )
 def test_calculation_repr(op: str, a: float, b: float, expected: str) -> None:

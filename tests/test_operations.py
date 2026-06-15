@@ -108,3 +108,22 @@ def test_valid_division(a: float, b: float, expected: float) -> None:
 def invalid_division(a: float, b: float) -> None:
     with pytest.raises(ZeroDivisionError, match="Error: b cannot be 0."):
         assert Operations.division(a, b)
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (4, 2, 16),
+        (5, 0, 1),
+        (36, 0.5, 6),
+        (2, -1, 0.5)
+    ],
+    ids=[
+        "power_positive_by_postive",
+        "power_positive_by_zero",
+        "power_squareroot",
+        "power_positive_by_negative"
+    ]
+)
+def test_power(a: float, b: float, expected: float) -> None:
+    result = Operations.power(a, b)
+    assert result == expected, f"Expected {a} / {b} == {expected}. Got {result}."

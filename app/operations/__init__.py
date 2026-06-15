@@ -73,3 +73,7 @@ class Operations():
         if b == 0:
             raise ZeroDivisionError("Error: b cannot be 0.")
         return a / b
+
+    @staticmethod
+    def power(a: float, b: float) -> float:
+        return a ** b

@@ -193,3 +193,8 @@ class Division(Calculation):
             ZeroDivisionError: If operand_b is zero.
         """
         return Operations.division(self.operand_a, self.operand_b)
+
+@CalculationFactory.register_calculation('power')
+class Power(Calculation):
+    def execute(self) -> float:
+        return Operations.power(self.operand_a, self.operand_b)
