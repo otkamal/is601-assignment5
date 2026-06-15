@@ -9,6 +9,7 @@ from app.calculation import Calculation, CalculationFactory
         ("divide", 10, 2, 5),
         ("multiply", 3, 3, 9),
         ("power", 5, 2, 25),
+        ("modulus", 5, 3, 2),
         ("ADD", 4, 2, 6),
     ],
     ids=[
@@ -17,6 +18,7 @@ from app.calculation import Calculation, CalculationFactory
         "factory_divide",
         "factory_multiply",
         "factory_power",
+        "factory_modulus",
         "factory_add_case_insensitive",
     ]
 )
@@ -32,7 +34,8 @@ def test_factory_build_and_execute(op: str, a: float, b: float, expected: float)
         ("subtract", 5, 10, "Subtraction(a = 5, b = 10)"),
         ("multiply", 5, 10, "Multiplication(a = 5, b = 10)"),
         ("divide", 5, 10, "Division(a = 5, b = 10)"),
-        ("power", 5, 2, "Power(a = 5, b = 2)")
+        ("power", 5, 2, "Power(a = 5, b = 2)"),
+        ("modulus", 5, 2, "Modulus(a = 5, b = 2)")
     ],
     ids=
     [
@@ -40,7 +43,8 @@ def test_factory_build_and_execute(op: str, a: float, b: float, expected: float)
         "string_subtract",
         "string_multiply",
         "string_divide",
-        "string_power"
+        "string_power",
+        "string_modulus"
     ]
 )
 def test_calculation_string(op: str, a: float, b: float, expected: str) -> None:
@@ -55,13 +59,15 @@ def test_calculation_string(op: str, a: float, b: float, expected: str) -> None:
         ("multiply", 5, 10, "Multiplication: operand_a = 5, operand_b = 10"),
         ("divide", 5, 10, "Division: operand_a = 5, operand_b = 10"),
         ("power", 5, 10, "Power: operand_a = 5, operand_b = 10"),
+        ("modulus", 5, 2, "Modulus: operand_a = 5, operand_b = 2")
     ],
     ids=[
         "repr_add",
         "repr_subtract",
         "repr_multiply",
         "repr_divide",
-        "repr_power"
+        "repr_power",
+        "repr_modulus"
     ]
 )
 def test_calculation_repr(op: str, a: float, b: float, expected: str) -> None:
@@ -85,5 +91,5 @@ def test_faactory_division_by_zero() -> None:
 
 def test_supported_operations_list() -> None:
     factory = CalculationFactory()
-    for op in ('add', 'subtract', 'multiply', 'divide', 'power'):
+    for op in ('add', 'subtract', 'multiply', 'divide', 'power', 'modulus'):
         assert op in factory.get_supported_operations(), f"{op} does not seem to be supported"

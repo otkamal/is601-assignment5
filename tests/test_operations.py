@@ -127,3 +127,33 @@ def invalid_division(a: float, b: float) -> None:
 def test_power(a: float, b: float, expected: float) -> None:
     result = Operations.power(a, b)
     assert result == expected, f"Expected {a} / {b} == {expected}. Got {result}."
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (4, 2, 0),
+        (36, 5, 1),
+        (2, 3, 2)
+    ],
+    ids=[
+        "modulus_clean_divisor",
+        "modulus_near_divisor",
+        "modulus_divisor_greater"
+    ]
+)
+def test_modulus(a: float, b: float, expected: float) -> None:
+    result = Operations.modulus(a, b)
+    assert result == expected, f"Expected {a} / {b} == {expected}. Got {result}."
+
+@pytest.mark.parametrize(
+    "a, b",
+    [
+        (5, 0)
+    ],
+    ids=[
+        "modulus_by_zero"
+    ]
+)
+def test_modulus_by_zero(a: float, b: float) -> None:
+    with pytest.raises(ZeroDivisionError, match="Error: b cannot be 0."):
+        assert Operations.modulus(a, b)

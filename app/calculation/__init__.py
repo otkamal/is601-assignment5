@@ -201,3 +201,9 @@ class Division(Calculation):
 class Power(Calculation):
     def execute(self) -> float:
         return Operations.power(self.operand_a, self.operand_b)
+    
+@CalculationFactory.register_calculation('modulus')
+class Modulus(Calculation):
+    def execute(self) -> float:
+        return Operations.modulus(self.operand_a, self.operand_b)
+    
