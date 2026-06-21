@@ -66,7 +66,6 @@ class CalculatorConfig:
                 self.log_directory.mkdir(parents=True, exist_ok=True)
             if history:
                 self.history_directory.mkdir(parents=True, exist_ok=True)
-
         except Exception as e:
             print(e)
             return 1
