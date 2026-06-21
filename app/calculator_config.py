@@ -61,6 +61,12 @@ class CalculatorConfig:
         self.log_file = Path(os.getenv('CALCULATOR_LOG_FILE', self._DEF_LOG_FILE))
 
     def setup_directories(self, logging: bool = True, history: bool = True) -> None:
+        """Create the log and history directories if they do not exist.
+
+        Args:
+            logging: Whether to create the log directory. Defaults to True.
+            history: Whether to create the history directory. Defaults to True.
+        """
         try:
             if logging:
                 self.log_directory.mkdir(parents=True, exist_ok=True)
