@@ -6,27 +6,35 @@ if TYPE_CHECKING:
     from app.calculator import Calculator
 
 class Subscriber(ABC):
-    @abstractmethod
-    def update(self, calculator: Calculator):
-        pass
+    """Abstract base class for calculator event subscribers."""
 
-    def update_on_shutdown(self, calculator: Calculator):
-        pass
+    @abstractmethod
+    def update(self, calculator: "Calculator"):
+        """Called after each calculation is performed."""
+
+    def update_on_shutdown(self, calculator: "Calculator"):
+        """Called when the calculator shuts down. Override to handle cleanup."""
+
 
 class CalculationSubscriber(Subscriber):
-    def update(self, calculator: Calculator):
+    """Logs each calculation to the application log."""
+
+    def update(self, calculator: "Calculator"):
+        """Log the most recent calculation result."""
         c = calculator.get_last_calculation()
         if c is not None:
-            logging.info(
-                f"calculation performed -> {c}"
-            )
+            logging.info(f"calculation performed -> {c}")
 
-    def update_on_shutdown(self, calculator):
+    def update_on_shutdown(self, calculator: "Calculator"):
         pass
+
 
 class AutoSaveSubscriber(Subscriber):
-    def update(self, calculator: Calculator):
+    """Persists history to disk when the calculator shuts down."""
+
+    def update(self, calculator: "Calculator"):
         pass
 
-    def update_on_shutdown(self, calculator):
+    def update_on_shutdown(self, calculator: "Calculator"):
+        """Save the current history to the configured CSV file."""
         calculator.save_history()
