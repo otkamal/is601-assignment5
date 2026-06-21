@@ -73,7 +73,7 @@ class Operations():
             ZeroDivisionError: If b is zero.
         """
         if b == 0:
-            raise ZeroDivisionError("Error: b cannot be 0.")
+            raise ZeroDivisionError("b cannot be 0.")
         return a / b
 
     @staticmethod
@@ -106,5 +106,5 @@ class Operations():
             ZeroDivisionError: If b is zero.
         """
         if b == 0:
-            raise ZeroDivisionError("Error: b cannot be 0.")
+            raise ZeroDivisionError("b cannot be 0.")
         return a % b
