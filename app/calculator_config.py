@@ -60,10 +60,13 @@ class CalculatorConfig:
         self.history_file = Path(os.getenv('CALCULATOR_HISTORY_FILE', self._DEF_HIST_FILE))
         self.log_file = Path(os.getenv('CALCULATOR_LOG_FILE', self._DEF_LOG_FILE))
 
-    def setup_directories(self) -> None:
+    def setup_directories(self, logging: bool = True, history: bool = True) -> None:
         try:
-            self.log_directory.mkdir(parents=True, exist_ok=True)
-            self.history_directory.mkdir(parents=True, exist_ok=True)
+            if logging:
+                self.log_directory.mkdir(parents=True, exist_ok=True)
+            if history:
+                self.history_directory.mkdir(parents=True, exist_ok=True)
+
         except Exception as e:
             print(e)
             return 1
