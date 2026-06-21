@@ -33,21 +33,29 @@ def start_repl(calculator: Calculator) -> None:
     print("Enter 'help' to see available operations or 'history' to see previously ran operations.")
 
     #history: list[tuple[Calculation, float]] = []
-    while True:
-        user_input = input(">>> ")
-        user_input = user_input.lower()
-        if user_input == "exit":
-            print("Exiting calculator... Goodbye ~")
-            break
-        
-        try:
-            operation, a, b = user_input.split()
-            a, b = float(a), float(b)
-        except ValueError:
-            print("Invalid input. Please follow <operation> <a> <b> syntax.")
-            continue
+    try:
+        while True:
+            user_input = input(">>> ")
+            user_input = user_input.lower()
+            if user_input == "exit":
+                print("Exiting calculator... Goodbye ~")
+                break
+            elif user_input == "history":
+                calculator.show_history()
+                continue
+            elif user_input == "save":
+                calculator.save_history()
+                continue
+            
+            try:
+                operation, a, b = user_input.split()
+                a, b = float(a), float(b)
+            except ValueError:
+                print("Invalid input. Please follow <operation> <a> <b> syntax.")
+                continue
+            result = calculator.calculate(operation, a, b).result
+            print(result)
 
-        calculation = CalculationFactory.build_calculation(operation, a, b)
-        result = calculator.calculate(calculation)
-        print(result)
+    finally:
+        calculator.shutdown()
         
