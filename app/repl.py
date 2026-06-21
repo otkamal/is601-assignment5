@@ -39,16 +39,7 @@ def start_repl(calculator: Calculator) -> None:
         if user_input == "exit":
             print("Exiting calculator... Goodbye ~")
             break
-        # elif user_input == "help":
-        #     dummy_factory = CalculationFactory()
-        #     operations = ", ".join(dummy_factory.get_supported_operations())
-        #     print(f"Supported operations: {operations}, history, help, and exit.")
-        #     continue
-        # elif user_input == "history":
-        #     for calc, result in history:
-        #         print(f"- {str(calc)} = {result}")
-        #     continue
-
+        
         try:
             operation, a, b = user_input.split()
             a, b = float(a), float(b)
@@ -60,14 +51,3 @@ def start_repl(calculator: Calculator) -> None:
         result = calculator.calculate(calculation)
         print(result)
         
-        # try:
-        #     #calculation = CalculationFactory.build_calculation(operation, a, b)
-        #     #result = calculation.execute()
-        #     #history.append((calculation, result))
-        #     print(f"Result: {result}")
-        # except ValueError as err:
-        #     print(err)
-        #     continue
-        # except ZeroDivisionError as err:
-        #     print(err)
-        #     continue
