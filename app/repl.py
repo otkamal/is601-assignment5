@@ -41,7 +41,12 @@ def start_repl(calculator: Calculator) -> None:
                 print("Exiting calculator... Goodbye ~")
                 break
             elif user_input == "history":
-                calculator.show_history()
+                history = calculator.get_history()
+                if not history:
+                    print("No history yet.")
+                else:
+                    for i, calc in enumerate(history, start=1):
+                        print(f"{i}. {calc}")
                 continue
             elif user_input == "save":
                 calculator.save_history()
@@ -53,15 +58,14 @@ def start_repl(calculator: Calculator) -> None:
             try:
                 operation, a, b = user_input.split()
                 a, b = float(a), float(b)
-            except ValueError:
-                print("Invalid input. Please follow <operation> <a> <b> syntax.")
-                continue
-
-            try:
                 result = calculator.calculate(operation, a, b).result
-                print(result)
-            except Exception as e:
-                logging.info(f"execution failed {e}")
+                print(f"Result: {result}")
+            except ValueError as e:
+                print(f"Error: {e}")
+                continue
+            except ZeroDivisionError as e:
+                print(f"Error: {e}")
+                continue
 
     finally:
         calculator.shutdown()
