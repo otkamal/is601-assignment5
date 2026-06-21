@@ -10,6 +10,9 @@ class Subscriber(ABC):
     def update(self, calculator: Calculator):
         pass
 
+    def update_on_shutdown(self, calculator: Calculator):
+        pass
+
 class CalculationSubscriber(Subscriber):
     def update(self, calculator: Calculator):
         c = calculator.get_last_calculation()
@@ -18,10 +21,12 @@ class CalculationSubscriber(Subscriber):
                 f"calculation performed -> {c}"
             )
 
+    def update_on_shutdown(self, calculator):
+        pass
+
 class AutoSaveSubscriber(Subscriber):
     def update(self, calculator: Calculator):
-        if calculator.config.auto_save:
-            logging.info(
-                f"auto-saving..."
-            )
-            calculator.save_history()
+        pass
+
+    def update_on_shutdown(self, calculator):
+        calculator.save_history()
