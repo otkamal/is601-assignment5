@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from app.operations import Operations
+from typing import Optional
 
 
 class Calculation(ABC):
@@ -14,7 +15,7 @@ class Calculation(ABC):
         execute(): Performs the calculation and returns the result.
     """
 
-    def __init__(self, a: float, b: float):
+    def __init__(self, a: float, b: float, result: Optional[float] = None):
         """
         Initializes the calculation with two operands.
 
@@ -24,6 +25,7 @@ class Calculation(ABC):
         """
         self.operand_a = a
         self.operand_b = b
+        self.result = None
 
     @abstractmethod
     def execute(self) -> float:
@@ -41,7 +43,7 @@ class Calculation(ABC):
         Returns:
             A string in the format ClassName(operand_a, operand_b).
         """
-        return f"{self.__class__.__name__}(a = {self.operand_a}, b = {self.operand_b})"
+        return f"{self.__class__.__name__}(a = {self.operand_a}, b = {self.operand_b}, result = {self.result})"
 
     def __repr__(self) -> str:
         """
@@ -50,8 +52,19 @@ class Calculation(ABC):
         Returns:
             A string in the format ClassName: operand_a = a, operand_b = b.
         """
-        return f"{self.__class__.__name__}: operand_a = {self.operand_a}, operand_b = {self.operand_b}"
+        return f"{self.__class__.__name__}: operand_a = {self.operand_a}, operand_b = {self.operand_b}, result = {self.result}"
     
+    def to_dict(self) -> dict:
+        return {
+            "operation": self.__class__.__name__,
+            "operand_a": self.operand_a,
+            "operand_b": self.operand_b,
+            "result": self.result
+        }
+    
+    def test(self) -> bool:
+        return self.execute() == self.result
+
 class CalculationFactory:
 
     """
@@ -120,6 +133,15 @@ class CalculationFactory:
             A view of the registered operation name strings.
         """
         return cls._calculations.keys()
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> Calculation:
+        return cls.build_calculation(
+            data["operation"],
+            float(data["operand_a"]),
+            float(data["operand_b"]),
+            float(data["result"])
+        )
 
 @CalculationFactory.register_calculation('add')
 class Addition(Calculation):
@@ -138,7 +160,8 @@ class Addition(Calculation):
         Returns:
             The sum of operand_a and operand_b.
         """
-        return Operations.addition(self.operand_a, self.operand_b)
+        self.result = Operations.addition(self.operand_a, self.operand_b)
+        return self.result
 
 
 @CalculationFactory.register_calculation('subtract')
@@ -158,7 +181,8 @@ class Subtraction(Calculation):
         Returns:
             The difference of operand_a and operand_b.
         """
-        return Operations.subtraction(self.operand_a, self.operand_b)
+        self.result = Operations.subtraction(self.operand_a, self.operand_b)
+        return self.result
 
 
 @CalculationFactory.register_calculation('multiply')
@@ -178,7 +202,8 @@ class Multiplication(Calculation):
         Returns:
             The product of operand_a and operand_b.
         """
-        return Operations.multiplication(self.operand_a, self.operand_b)
+        self.result = Operations.multiplication(self.operand_a, self.operand_b)
+        return self.result
 
 
 @CalculationFactory.register_calculation('divide')
@@ -201,7 +226,8 @@ class Division(Calculation):
         Raises:
             ZeroDivisionError: If operand_b is zero.
         """
-        return Operations.division(self.operand_a, self.operand_b)
+        self.result = Operations.division(self.operand_a, self.operand_b)
+        return self.result
 
 @CalculationFactory.register_calculation('power')
 class Power(Calculation):
@@ -220,8 +246,8 @@ class Power(Calculation):
         Returns:
             The result of operand_a raised to the power of operand_b.
         """
-        return Operations.power(self.operand_a, self.operand_b)
-
+        self.result = Operations.power(self.operand_a, self.operand_b)
+        return self.result
 
 @CalculationFactory.register_calculation('modulus')
 class Modulus(Calculation):
@@ -243,5 +269,6 @@ class Modulus(Calculation):
         Raises:
             ZeroDivisionError: If operand_b is zero.
         """
-        return Operations.modulus(self.operand_a, self.operand_b)
+        self.result = Operations.modulus(self.operand_a, self.operand_b)
+        return self.result
     
