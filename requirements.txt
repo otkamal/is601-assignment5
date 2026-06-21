@@ -3,3 +3,4 @@ pytest-cov==7.1.0
 flake8==7.3.0
 pyfiglet==1.0.2
 python-dotenv>=1.1.0
+pandas>=2.2.0
