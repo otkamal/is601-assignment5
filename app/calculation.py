@@ -55,8 +55,9 @@ class Calculation(ABC):
         return f"{self.__class__.__name__}: operand_a = {self.operand_a}, operand_b = {self.operand_b}, result = {self.result}"
     
     def to_dict(self) -> dict:
+        operation = next(k for k, v in CalculationFactory._calculations.items() if v == self.__class__)
         return {
-            "operation": self.__class__.__name__,
+            "operation": operation,
             "operand_a": self.operand_a,
             "operand_b": self.operand_b,
             "result": self.result
@@ -136,12 +137,13 @@ class CalculationFactory:
     
     @classmethod
     def from_dict(cls, data: dict) -> Calculation:
-        return cls.build_calculation(
+        calc = cls.build_calculation(
             data["operation"],
             float(data["operand_a"]),
-            float(data["operand_b"]),
-            float(data["result"])
+            float(data["operand_b"])
         )
+        calc.result = float(data["result"])
+        return calc
 
 @CalculationFactory.register_calculation('add')
 class Addition(Calculation):
