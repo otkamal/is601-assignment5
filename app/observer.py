@@ -12,5 +12,3 @@ class Observer(ABC):
     @abstractmethod
     def notify(self):
         pass
-
-class 
