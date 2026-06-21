@@ -1,69 +1,37 @@
-from pyfiglet import Figlet
+import logging
 from app.calculation import Calculation, CalculationFactory
+from app.calculator_config import CalculatorConfig
 
+class Calculator():
 
-def calculator() -> None:
-    """
-    Runs an interactive calculator REPL (Read-Eval-Print Loop).
+    def __init__(self, config: CalculatorConfig):
+        self.config = CalculatorConfig() \
+            if config is None else config
+    
+        self._history: list[tuple[Calculation, float]] = []
+        self._LOG_FILE = "calculator.log"
+        self._init_logging()
+        self._log_config()
 
-    Prompts the user to enter an operation and two numbers in the format
-    <operation> <a> <b>, computes the result, and prints it. Continues
-    until the user types 'exit'.
+    def calculate(self, calc: Calculation):
+        result = calc.execute()
+        if len(self._history) > self.config.history_size:
+            self._history.pop()
+        self._history.append((calc, result))
+        return result
 
-    Supported operations:
-        - add: Adds a and b.
-        - subtract: Subtracts b from a.
-        - multiply: Multiplies a and b.
-        - divide: Divides a by b.
+    def _init_logging(self):
+        logging.basicConfig(
+            filename=self.config.log_file,
+            encoding=self.config.encoding,
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s'
+        )
+        logging.info(f"logging initialized at {self.config.log_file}")
 
-    Raises:
-        ZeroDivisionError: If divide is used and b is zero (handled internally).
-        ValueError: If the input format is invalid (handled internally).
-
-    Example:
-        >>> calculator()
-        Enter an operation and two numbers, or 'exit' to quit: add 5 3
-        Result: 8.0
-    """
-
-    startscreen = Figlet(font="slant")
-    print(startscreen.renderText("Calculator REPL"))
-    print("Type 'exit' to quit.")
-    print("Enter an operation and two numbers, or 'exit' to quit.")
-    print("Enter 'help' to see available operations or 'history' to see previously ran operations.")
-
-    history: list[tuple[Calculation, float]] = []
-    while True:
-        user_input = input(">>> ")
-        user_input = user_input.lower()
-        if user_input == "exit":
-            print("Exiting calculator... Goodbye ~")
-            break
-        elif user_input == "help":
-            dummy_factory = CalculationFactory()
-            operations = ", ".join(dummy_factory.get_supported_operations())
-            print(f"Supported operations: {operations}, history, help, and exit.")
-            continue
-        elif user_input == "history":
-            for calc, result in history:
-                print(f"- {str(calc)} = {result}")
-            continue
-
-        try:
-            operation, a, b = user_input.split()
-            a, b = float(a), float(b)
-        except ValueError:
-            print("Invalid input. Please follow <operation> <a> <b> syntax.")
-            continue
-
-        try:
-            calculation = CalculationFactory.build_calculation(operation, a, b)
-            result = calculation.execute()
-            history.append((calculation, result))
-            print(f"Result: {result}")
-        except ValueError as err:
-            print(err)
-            continue
-        except ZeroDivisionError as err:
-            print(err)
-            continue
+    def _log_config(self):
+        logging.info(f"history size set to {self.config.history_size}")
+        logging.info(f"precision set to {self.config.precision}")
+        logging.info(f"encoding set to {self.config.encoding}")
+        logging.info(f"max value set to {self.config.max_value}")
+        logging.info(f"auto-save set to {self.config.auto_save}")
