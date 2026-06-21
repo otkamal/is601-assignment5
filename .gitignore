@@ -3,6 +3,11 @@
 # environment variables
 .env
 
+# history files
+history.csv
+.vscode
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
