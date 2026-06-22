@@ -155,5 +155,5 @@ def test_modulus(a: float, b: float, expected: float) -> None:
     ]
 )
 def test_modulus_by_zero(a: float, b: float) -> None:
-    with pytest.raises(ZeroDivisionError, match="Error: b cannot be 0."):
+    with pytest.raises(ZeroDivisionError, match="b cannot be 0."):
         assert Operations.modulus(a, b)
