@@ -33,7 +33,7 @@ def start_repl(calculator: Calculator) -> None:
 
     try:
         while True:
-            user_input = input(">>> ")
+            user_input = input("\n>>> ")
             user_input = user_input.lower()
             if user_input == "exit":
                 print("Exiting calculator... Goodbye ~")
@@ -54,6 +54,19 @@ def start_repl(calculator: Calculator) -> None:
                 calculator.clear_history()
                 print("History has been cleared.")
                 continue
+            elif user_input == "load":
+                calculator.clear_history()
+                calculator.load_history()
+                print("History has been reloaded.")
+                continue
+            elif user_input == "help":
+                print("Available Commands:")
+                print("1. help\n2. save\n3. clear\n4. load\n5. exit\n")
+                print("Available Operations:")
+                for i, k in enumerate(calculator.get_supported_operations(), start=1):
+                    print(f"{i}. {k}")
+                continue
+                
             
             try:
                 operation, a, b = user_input.split()
