@@ -59,9 +59,21 @@ def start_repl(calculator: Calculator) -> None:
                 calculator.load_history()
                 print("History has been reloaded.")
                 continue
+            elif user_input == "undo":
+                if calculator.undo():
+                    print("History has been undone.")
+                else:
+                    print("Nothing to undo.")
+                continue
+            elif user_input == "redo":
+                if calculator.redo():
+                    print("History has been redone.")
+                else:
+                    print("Nothing to redo.")
+                continue
             elif user_input == "help":
                 print("Available Commands:")
-                print("1. help\n2. save\n3. clear\n4. load\n5. exit\n")
+                print("1. help\n2. save\n3. clear\n4. load\n5. redo\n6. undo\n7. exit\n")
                 print("Available Operations:")
                 for i, k in enumerate(calculator.get_supported_operations(), start=1):
                     print(f"{i}. {k}")
