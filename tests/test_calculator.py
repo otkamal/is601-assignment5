@@ -14,7 +14,7 @@ def reset_singleton():
     CalculatorConfig._instance = None
 
 @pytest.fixture(autouse=True)
-def config(tmp_path):
+def config(tmp_path, reset_singleton):
     (tmp_path / "logs").mkdir()
     (tmp_path / "history").mkdir()
     with patch.dict(os.environ, {
@@ -143,7 +143,7 @@ def test_save_history_logs_on_error(calculator, caplog):
 def test_load_history_logs_on_error(calculator, caplog):
     with patch('pandas.read_csv', side_effect=PermissionError("no access")):
         with caplog.at_level(logging.ERROR):
-            calculator._load_history()
+            calculator.load_history()
     assert "could not load" in caplog.text
 
 def test_clear_history(calculator):
