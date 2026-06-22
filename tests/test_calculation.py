@@ -30,12 +30,12 @@ def test_factory_build_and_execute(op: str, a: float, b: float, expected: float)
 @pytest.mark.parametrize(
     "op, a, b, expected",
     [
-        ("add", 5, 10, "Addition(a = 5, b = 10)"),
-        ("subtract", 5, 10, "Subtraction(a = 5, b = 10)"),
-        ("multiply", 5, 10, "Multiplication(a = 5, b = 10)"),
-        ("divide", 5, 10, "Division(a = 5, b = 10)"),
-        ("power", 5, 2, "Power(a = 5, b = 2)"),
-        ("modulus", 5, 2, "Modulus(a = 5, b = 2)")
+        ("add", 5, 10, "Addition(a = 5, b = 10, result = None)"),
+        ("subtract", 5, 10, "Subtraction(a = 5, b = 10, result = None)"),
+        ("multiply", 5, 10, "Multiplication(a = 5, b = 10, result = None)"),
+        ("divide", 5, 10, "Division(a = 5, b = 10, result = None)"),
+        ("power", 5, 2, "Power(a = 5, b = 2, result = None)"),
+        ("modulus", 5, 2, "Modulus(a = 5, b = 2, result = None)")
     ],
     ids=
     [
@@ -54,12 +54,12 @@ def test_calculation_string(op: str, a: float, b: float, expected: str) -> None:
 @pytest.mark.parametrize(
     "op, a, b, expected",
     [
-        ("add", 5, 10, "Addition: operand_a = 5, operand_b = 10"),
-        ("subtract", 5, 10, "Subtraction: operand_a = 5, operand_b = 10"),
-        ("multiply", 5, 10, "Multiplication: operand_a = 5, operand_b = 10"),
-        ("divide", 5, 10, "Division: operand_a = 5, operand_b = 10"),
-        ("power", 5, 10, "Power: operand_a = 5, operand_b = 10"),
-        ("modulus", 5, 2, "Modulus: operand_a = 5, operand_b = 2")
+        ("add", 5, 10, "Addition: operand_a = 5, operand_b = 10, result = None"),
+        ("subtract", 5, 10, "Subtraction: operand_a = 5, operand_b = 10, result = None"),
+        ("multiply", 5, 10, "Multiplication: operand_a = 5, operand_b = 10, result = None"),
+        ("divide", 5, 10, "Division: operand_a = 5, operand_b = 10, result = None"),
+        ("power", 5, 10, "Power: operand_a = 5, operand_b = 10, result = None"),
+        ("modulus", 5, 2, "Modulus: operand_a = 5, operand_b = 2, result = None")
     ],
     ids=[
         "repr_add",
@@ -86,10 +86,54 @@ def test_unsupported_operation() -> None:
         CalculationFactory.build_calculation("percent", 5, 100)
 
 def test_faactory_division_by_zero() -> None:
-    with pytest.raises(ZeroDivisionError, match="Error: b cannot be 0."):
+    with pytest.raises(ZeroDivisionError, match="b cannot be 0."):
         CalculationFactory.build_calculation("divide", 10, 0).execute()
 
 def test_supported_operations_list() -> None:
     factory = CalculationFactory()
     for op in ('add', 'subtract', 'multiply', 'divide', 'power', 'modulus'):
         assert op in factory.get_supported_operations(), f"{op} does not seem to be supported"
+
+@pytest.mark.parametrize(
+    "operation, a, b, expected", [
+        ("add", 1, 2, 3),
+        ("subtract", 5, 3, 2),
+        ("multiply", 4, 5, 20),
+        ("divide", 10, 2, 5)
+    ],
+    ids=[
+        "to_add_dict",
+        "to_subtract_dict",
+        "to_multiply_dict",
+        "to_divide_dict"
+    ]
+)
+def test_to_dict(operation, a, b, expected):
+    calc = CalculationFactory.build_calculation(operation, a, b)
+    calc.execute()
+    d = calc.to_dict()
+    assert d["operation"] == operation
+    assert d["operand_a"] == a
+    assert d["operand_b"] == b
+    assert d["result"] == expected
+
+def test_from_dict():
+    d = {
+        "operation": "add",
+        "operand_a": 1,
+        "operand_b": 1,
+        "result": 2
+    }
+    calc = CalculationFactory.from_dict(d)
+    assert calc.operand_a == 1
+    assert calc.operand_b == 1
+    assert calc.result == 2
+
+def test_dict_round_trip():
+    calc = CalculationFactory.build_calculation("add", 1, 1)
+    calc.execute()
+    restored = CalculationFactory.from_dict(calc.to_dict())
+    assert restored.operand_a == calc.operand_a
+    assert restored.operand_b == calc.operand_b
+    assert restored.result == calc.result
+    
