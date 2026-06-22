@@ -66,7 +66,7 @@ class Calculator():
     def _init_history(self) -> None:
         """Load history from disk if it exists, or create an empty file if auto-save is on."""
         if self.config.history_file.exists():
-            self._load_history()
+            self.load_history()
         elif self.config.auto_save:
             self.config.history_file.touch()
 
@@ -83,7 +83,7 @@ class Calculator():
         logging.info(f"adding {sub.__class__.__name__}")
         self._subscribers.append(sub)
 
-    def _load_history(self) -> None:
+    def load_history(self) -> None:
         """Read history CSV and populate _history, trimming to history_size if needed."""
         try:
             if self.config.history_file.stat().st_size == 0:
