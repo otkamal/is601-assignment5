@@ -5,6 +5,7 @@ from app.calculation import Calculation, CalculationFactory
 from app.observer import Subscriber, CalculationSubscriber, AutoSaveSubscriber
 from app.calculator_config import CalculatorConfig
 
+
 class Calculator():
     """Calculator that executes operations, maintains history, and notifies subscribers.
 
@@ -21,7 +22,7 @@ class Calculator():
         """
         self.config = CalculatorConfig() \
             if config is None else config
-    
+
         self._history: list[Calculation] = []
         self._subscribers: list[Subscriber] = []
         self._init_logging()
@@ -110,7 +111,7 @@ class Calculator():
     def get_last_calculation(self) -> Calculation:
         """Return the most recent calculation, or None if history is empty."""
         return self._history[-1] if self._history else None
-    
+
     def _update_subscribers(self):
         """Notify all subscribers that a new calculation was performed."""
         for sub in self._subscribers:
@@ -133,7 +134,7 @@ class Calculator():
 
     def shutdown(self) -> None:
         """Notify all subscribers of shutdown so they can flush state to disk."""
-        logging.info(f"calculator is shutting down. sending final notify")
+        logging.info("calculator is shutting down. sending final notify")
         for sub in self._subscribers:
             sub.update_on_shutdown(self)
 
@@ -145,7 +146,7 @@ class Calculator():
     @staticmethod
     def get_supported_operations():
         return CalculationFactory.get_supported_operations()
-    
+
     def undo(self):
         """Revert to the history state before the most recent calculation.
 

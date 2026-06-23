@@ -1,6 +1,7 @@
 from pyfiglet import Figlet
 from app.calculator import Calculator
 
+
 def start_repl(calculator: Calculator) -> None:
     """Run an interactive calculator REPL (Read-Eval-Print Loop).
 
@@ -80,8 +81,7 @@ def start_repl(calculator: Calculator) -> None:
                 for i, k in enumerate(calculator.get_supported_operations(), start=1):
                     print(f"{i}. {k}")
                 continue
-                
-            
+
             try:
                 operation, a, b = user_input.split()
                 a, b = float(a), float(b)
@@ -96,4 +96,3 @@ def start_repl(calculator: Calculator) -> None:
 
     finally:
         calculator.shutdown()
-        

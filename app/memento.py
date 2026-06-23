@@ -1,5 +1,6 @@
 import datetime
 
+
 class CalculatorMemento():
     """Snapshot of a Calculator's history at a point in time.
 

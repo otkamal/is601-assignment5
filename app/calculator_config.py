@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 from pathlib import Path
 
+
 class CalculatorConfig:
     """Singleton configuration for the calculator application.
 
@@ -46,7 +47,7 @@ class CalculatorConfig:
         """
         if hasattr(self, '_initialized'):
             return
-        
+
         self._initialized = True
 
         self.base_directory = Path(os.getenv('CALCULATOR_BASE_DIR', self._DEF_BASE_DIR))

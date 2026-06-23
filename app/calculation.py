@@ -51,7 +51,7 @@ class Calculation(ABC):
             A string in the format 'ClassName: operand_a = <a>, operand_b = <b>, result = <result>'.
         """
         return f"{self.__class__.__name__}: operand_a = {self.operand_a}, operand_b = {self.operand_b}, result = {self.result}"
-    
+
     def to_dict(self) -> dict:
         """Serialize this calculation to a dictionary.
 
@@ -65,6 +65,7 @@ class Calculation(ABC):
             "operand_b": self.operand_b,
             "result": self.result
         }
+
 
 class CalculationFactory:
 
@@ -134,7 +135,7 @@ class CalculationFactory:
             A view of the registered operation name strings.
         """
         return cls._calculations.keys()
-    
+
     @classmethod
     def from_dict(cls, data: dict) -> Calculation:
         """Deserialize a Calculation from a dictionary.
@@ -155,6 +156,7 @@ class CalculationFactory:
         )
         calc.result = float(data["result"])
         return calc
+
 
 @CalculationFactory.register_calculation('add')
 class Addition(Calculation):
@@ -242,6 +244,7 @@ class Division(Calculation):
         self.result = Operations.division(self.operand_a, self.operand_b)
         return self.result
 
+
 @CalculationFactory.register_calculation('power')
 class Power(Calculation):
 
@@ -261,6 +264,7 @@ class Power(Calculation):
         """
         self.result = Operations.power(self.operand_a, self.operand_b)
         return self.result
+
 
 @CalculationFactory.register_calculation('modulus')
 class Modulus(Calculation):
@@ -284,4 +288,3 @@ class Modulus(Calculation):
         """
         self.result = Operations.modulus(self.operand_a, self.operand_b)
         return self.result
-    
