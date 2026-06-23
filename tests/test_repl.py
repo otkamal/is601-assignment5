@@ -92,14 +92,53 @@ def test_get_history(monkeypatch, capsys):
     mock_calculator.get_history.assert_called_once()
     assert "1. Addition(a = 1.0, b = 1.0, result = 2.0)" in capsys.readouterr().out
 
-def test_load_history():
-    pass
+def test_load_history(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    inputs = iter(["load", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    mock_calculator.clear_history.assert_called_once()
+    mock_calculator.load_history.assert_called_once()
+    assert "History has been reloaded" in capsys.readouterr().out
 
-def test_undo_history():
-    pass
+def test_undo_history(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    inputs = iter(["add 1 1", "undo", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    mock_calculator.undo.assert_called_once()
+    assert "History has been undone." in capsys.readouterr().out
 
-def test_redo_history():
-    pass
+def test_undo_no_history(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    mock_calculator.undo.return_value = False
+    inputs = iter(["undo", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    mock_calculator.undo.assert_called_once()
+    assert "Nothing to undo." in capsys.readouterr().out
 
-def test_help():
-    pass
+def test_redo_history(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    inputs = iter(["add 1 1", "undo", "redo", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    mock_calculator.redo.assert_called_once()
+    assert "History has been redone." in capsys.readouterr().out
+
+def test_redo_no_undo_history(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    mock_calculator.redo.return_value = False
+    inputs = iter(["redo", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    mock_calculator.redo.assert_called_once()
+    assert "Nothing to redo." in capsys.readouterr().out 
+
+def test_help(monkeypatch, capsys):
+    mock_calculator = MagicMock()
+    mock_calculator.get_supported_operations.return_value = ['add']
+    inputs = iter(["help", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    start_repl(mock_calculator)
+    assert "Available Commands" and "1. add" in capsys.readouterr().out

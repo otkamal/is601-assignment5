@@ -4,6 +4,7 @@ import pytest
 import logging
 from unittest.mock import MagicMock, patch
 from app.calculator import Calculator
+from app.calculation import CalculationFactory
 from app.calculator_config import CalculatorConfig
 from app.observer import CalculationSubscriber, AutoSaveSubscriber
 
@@ -160,3 +161,39 @@ def test_shutdown_notifies_subscribers(calculator):
     calculator.shutdown()
     mock_sub1.update_on_shutdown.assert_called_once_with(calculator)
     mock_sub2.update_on_shutdown.assert_called_once_with(calculator)
+
+def test_get_supported_operations(calculator):
+    ops = calculator.get_supported_operations()
+    dummy_calculation = CalculationFactory.get_supported_operations()
+    for op in ops:
+        assert op in dummy_calculation
+
+def test_no_undo_on_new_calculator():
+    c = Calculator()
+    assert not c.undo()
+
+def test_no_redo_on_new_calculator():
+    c = Calculator()
+    assert not c.redo()
+
+def test_undo_on_single_calculation(calculator):
+    init_history = calculator.get_history()
+    calculator.calculate('add', 1, 1)
+    calculator.undo()
+    assert len(calculator.get_history()) == len(init_history)
+
+def test_undo_on_stack(calculator):
+    calculator.calculate('add', 1, 1)
+    calculator.calculate('subtract', 1, 1)
+    calculator.undo()
+    assert len(calculator.get_history()) == 1
+    calculator.undo()
+    assert len(calculator.get_history()) == 0
+
+def test_redo_on_single_calculation(calculator):
+    calculator.calculate('add', 1, 1)
+    h = calculator.get_history()
+    calculator.undo()
+    calculator.redo()
+    assert len(h) == len(calculator.get_history())
+    
